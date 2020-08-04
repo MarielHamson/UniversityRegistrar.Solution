@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace UniversityRegistrar.Controllers
 {
-  public class StudentsController : Controllers
+  public class StudentsController : Controller
   {
     private readonly UniversityRegistrarContext _db;
 

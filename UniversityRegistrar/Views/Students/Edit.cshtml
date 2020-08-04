@@ -1,0 +1,27 @@
+@{
+  Layout = "_Layout";
+}
+
+@model UniversityRegistrar.Models.Student
+
+<h3>Edit student info for:</h3>
+<hr />
+<p class="student-info">@Html.DisplayFor(model => model.Name)</p>
+@using (Html.BeginForm())
+{
+  @Html.HiddenFor(model => model.StudentId)
+  <div class="form-group">
+    @Html.LabelFor(model => model.Name)
+    @Html.EditorFor(model => model.Name, new {@class = "form-control"})
+  </div>
+  <div class="form-group">
+    @Html.LabelFor(model => model.EnrollmentDay)
+    @Html.EditorFor(model => model.EnrollmentDay, new { @type = "date", @class = "form-control"})
+  </div>
+  <div class="form-group"> 
+    @Html.Label("Select course:")
+    @Html.DropDownList("CourseId")
+  </div>
+  <input type="submit" value="Edit" class="btn" />
+}
+<p>@Html.ActionLink("Back to students list", "Index")</p>
