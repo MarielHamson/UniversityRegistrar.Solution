@@ -12,7 +12,7 @@ namespace UniversityRegistrar.Models
     public int StudentId {get; set;}
     public string Name {get; set;}
     public DateTime EnrollmentDay {get; set;}
-
+    public string EnrollmentDayInfo {get {return EnrollmentDay.ToString("MM/dd/yyyy");}}
     public ICollection<StudentCourse> Courses {get;}
   }
 }

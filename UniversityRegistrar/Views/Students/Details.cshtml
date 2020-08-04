@@ -7,7 +7,7 @@
 <h3>Student info:</h3>
 <hr />
 <p class="student-info">@Html.DisplayFor(model => model.Name)</p>
-<p class="student-info">@Html.DisplayFor(model => model.EnrollmentDay.Date)</p>
+<p class="student-info">@Html.DisplayFor(model => model.EnrollmentDayInfo)</p>
 <hr />
 <h4>Student courses:</h4>
 @if(@Model.Courses.Count == 0)
@@ -23,7 +23,7 @@ else
     @using (Html.BeginForm("DeleteCourse", "Students"))
     {
       @Html.Hidden("joinId", @join.StudentCourseId)
-      <input type="submit" value="Delete"/ class="btn">
+      <input type="submit" value="Delete" class="btn"/>
     }
   }
   </ul>

@@ -28,18 +28,22 @@ namespace UniversityRegistrar.Controllers
 
     public ActionResult Create()
     {
-      ViewBag.CourseId = new SelectList(_db.Courses, "CourseId", "Name");
+      ViewBag.CourseId = _db.Courses.ToList();
+      // ViewBag.CourseId = new SelectList(_db.Courses, "CourseId", "Name");
       return View();
     }
 
     [HttpPost]
-
-    public ActionResult Create(Student student, int CourseId)
+    public ActionResult Create(Student student, int[] CourseId)
     {
       _db.Students.Add(student);
-      if(CourseId !=0)
+      if(CourseId.Length !=0)
       {
-        _db.StudentCourse.Add(new StudentCourse() { CourseId = CourseId, StudentId = student.StudentId});
+        foreach(int id in CourseId)
+        {
+          _db.StudentCourse.Add(new StudentCourse() { CourseId = id, StudentId = student.StudentId});
+        }
+        //_db.StudentCourse.Add(new StudentCourse() { CourseId = CourseId, StudentId = student.StudentId});
       }
       _db.SaveChanges();
       return RedirectToAction("Index");
