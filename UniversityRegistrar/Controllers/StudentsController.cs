@@ -16,8 +16,20 @@ namespace UniversityRegistrar.Controllers
       _db = db;
     }
 
-    public ActionResult Index()
+    public ActionResult Index(string searchString)
     {
+      if(searchString != null)
+      {
+        List<Student> searchStudents = new List<Student>();
+        foreach(Student student in _db.Students)
+        {
+          if(student.Name.Contains(searchString))
+          {
+            searchStudents.Add(student);
+          }
+        }
+        return View(searchStudents);
+      }
       return View(_db.Students.ToList());
     }
 
@@ -75,6 +87,7 @@ namespace UniversityRegistrar.Controllers
       ViewBag.CourseId = new SelectList(_db.Courses, "CourseId", "Name");
       return View(thisStudent);
     }
+
     [HttpPost]
     public ActionResult AddCourse(Student student, int CourseId)
     {
