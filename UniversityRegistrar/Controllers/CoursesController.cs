@@ -16,9 +16,16 @@ namespace UniversityRegistrar.Controllers
       _db = db;
     } 
 
-    public ActionResult Index()
+      public ActionResult Index(string searchCourse)
     {
-      return View(_db.Courses.ToList());
+      if(!string.IsNullOrEmpty(searchCourse))
+      {
+        var searchCourses = (from course in _db.Courses
+                             where course.CourseNumber.Contains(searchCourse) || course.Name.Contains(searchCourse)
+                             select course).ToList();
+        return View(searchCourses);
+      }
+      return View(_db.Students.ToList());
     }
 
     public ActionResult Create()

@@ -7,9 +7,11 @@
 
 <h3>Find a student:</h3>
 <hr />
-@Html.TextBox("SearchInput")
-<p>@Html.ActionLink("Search", "Index", "Students", new { searchString = "SearchInput" })</p>
-
+@using (Html.BeginForm("Index", "Students", FormMethod.Get))
+{
+  <p>@Html.TextBox("searchStudent")</p>
+  <button class="btn" type="submit">Search</button>
+}
 
 <h3>Students list:</h3>
 <hr />

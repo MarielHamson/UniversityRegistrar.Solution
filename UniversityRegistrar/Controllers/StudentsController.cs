@@ -16,18 +16,13 @@ namespace UniversityRegistrar.Controllers
       _db = db;
     }
 
-    public ActionResult Index(string searchString)
+    public ActionResult Index(string searchStudent)
     {
-      if(searchString != null)
+      if(!string.IsNullOrEmpty(searchStudent))
       {
-        List<Student> searchStudents = new List<Student>();
-        foreach(Student student in _db.Students)
-        {
-          if(student.Name.Contains(searchString))
-          {
-            searchStudents.Add(student);
-          }
-        }
+        var searchStudents = (from student in _db.Students
+                             where student.Name.Contains(searchStudent)
+                             select student).ToList();
         return View(searchStudents);
       }
       return View(_db.Students.ToList());
