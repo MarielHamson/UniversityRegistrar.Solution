@@ -20,9 +20,7 @@ namespace UniversityRegistrar.Controllers
     {
       if(!string.IsNullOrEmpty(searchStudent))
       {
-        var searchStudents = (from student in _db.Students
-                             where student.Name.Contains(searchStudent)
-                             select student).ToList();
+        var searchStudents = _db.Students.Where(students => students.Name.Contains(searchStudent)).ToList();                    
         return View(searchStudents);
       }
       return View(_db.Students.ToList());
