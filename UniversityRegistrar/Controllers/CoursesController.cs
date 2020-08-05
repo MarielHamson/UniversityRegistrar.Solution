@@ -42,8 +42,8 @@ namespace UniversityRegistrar.Controllers
     public ActionResult Details(int id)
     {
       Course thisCourse = _db.Courses
-        .Include(course => course.Students)
-        .ThenInclude(join => join.Student)
+        .Include(course => course.Students).ThenInclude(join=> join.Student)
+        .Include(course => course.Departments).ThenInclude(join => join.Department)
         .FirstOrDefault(courses => courses.CourseId == id);
         return View(thisCourse);
     }

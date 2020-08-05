@@ -17,6 +17,10 @@
     @Html.LabelFor(model => model.EnrollmentDay)
     @Html.TextBoxFor(model => model.EnrollmentDay, new { @type = "date", @class = "form-control"})
   </div>
+  <div class="form-group">
+    @Html.Label("Select department:")
+    @Html.DropDownList("DepartmentId")
+  </div>
   <div class="form-group"> 
     @*@Html.Label("Select course:")
     @Html.DropDownList("CourseId")*@

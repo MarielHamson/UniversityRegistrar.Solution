@@ -1,7 +1,7 @@
 @{
   Layout = "_Layout";
 }
-
+@using UniversityRegistrar.Models
 @model UniversityRegistrar.Models.Student
 
 <h3>Edit student info for:</h3>
@@ -19,8 +19,16 @@
     @Html.EditorFor(model => model.EnrollmentDay, new { @type = "date", @class = "form-control"})
   </div>
   <div class="form-group"> 
-    @Html.Label("Select course:")
-    @Html.DropDownList("CourseId")
+    @Html.Label("Select department:")
+    @Html.DropDownList("DepartmentId")
+  </div>
+  <div class="form-group"> 
+    @Html.Label("Select courses:")
+    @foreach (Course course in ViewBag.CourseId)
+    {
+      @Html.Label(course.Name)
+      @Html.CheckBox("CourseId", false, new { value = course.CourseId })
+    }
   </div>
   <input type="submit" value="Edit" class="btn" />
 }

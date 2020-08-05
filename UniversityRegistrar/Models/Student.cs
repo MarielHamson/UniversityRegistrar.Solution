@@ -7,14 +7,13 @@ namespace UniversityRegistrar.Models
   {
     public Student()
     {
-      this.Courses = new HashSet<StudentCourse>();
+      this.Courses = new HashSet<StudentCourseDepartment>();
     }
-    public int DepartmentId { get; set; }
-    public virtual Department Department { get; set; }
     public int StudentId {get; set;}
     public string Name {get; set;}
     public DateTime EnrollmentDay {get; set;}
     public string EnrollmentDayInfo {get {return EnrollmentDay.ToString("MM/dd/yyyy");}}
-    public ICollection<StudentCourse> Courses {get;}
+    public virtual ICollection<StudentCourseDepartment> Courses {get; set;}  
+    public virtual StudentCourseDepartment Department {get; set;}  
   }
 }

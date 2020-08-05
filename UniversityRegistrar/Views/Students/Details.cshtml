@@ -9,6 +9,16 @@
 <p class="student-info">@Html.DisplayFor(model => model.Name)</p>
 <p class="student-info">@Html.DisplayFor(model => model.EnrollmentDayInfo)</p>
 <hr />
+<h4>Student department:</h4>
+@if(@Model.Department == null)
+{
+  <p>Student has not declared a major yet.</p> 
+}
+else 
+{
+  <p class="student-info">@Html.DisplayFor(model => model.Department.Department.Name)</p>
+}
+<hr />
 <h4>Student courses:</h4>
 @if(@Model.Courses.Count == 0)
 {
@@ -22,12 +32,13 @@ else
     <li>@join.Course.Name</li>
     @using (Html.BeginForm("DeleteCourse", "Students"))
     {
-      @Html.Hidden("joinId", @join.StudentCourseId)
+      @Html.Hidden("joinId", @join.StudentCourseDepartmentId)
       <input type="submit" value="Delete" class="btn"/>
     }
   }
   </ul>
 }
+
 <p>@Html.ActionLink("Back to students list", "Index")</p>
 <p>@Html.ActionLink("Edit student info", "Edit", new { id = Model.StudentId })</p>
 <p>@Html.ActionLink("Delete student", "Delete", new { id = Model.StudentId })</p>
