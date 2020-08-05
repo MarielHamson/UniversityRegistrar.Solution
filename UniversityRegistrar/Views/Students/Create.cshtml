@@ -21,10 +21,10 @@
     @*@Html.Label("Select course:")
     @Html.DropDownList("CourseId")*@
     @Html.Label("Select courses:")
-    @foreach (Course name in ViewBag.CourseId)
+    @foreach (Course course in ViewBag.CourseId)
     {
-      @Html.Label(name.Name)
-      @Html.CheckBox("CourseId", false, new { value = name.CourseId })
+      @Html.Label(course.Name)
+      @Html.CheckBox("CourseId", false, new { value = course.CourseId })
     }
   </div>
   <input type="submit" value="Add new student" class="btn" />
