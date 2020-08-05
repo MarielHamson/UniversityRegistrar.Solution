@@ -1,0 +1,29 @@
+@{
+  Layout = "_Layout";
+}
+
+@using UniversityRegistrar.Models;
+@model List<UniversityRegistrar.Models.Department>;
+
+<h3>Find a department:</h3>
+<hr />
+@using (Html.BeginForm("Index", "Departments", FormMethod.Get))
+{
+  <p>@Html.TextBox("searchDepartment")</p>
+  <button class="btn" type="submit">Search</button>
+}
+
+<h3>Departments list:</h3>
+<hr />
+@if (@Model.Count == 0)
+{
+  <p>No departments have been found.</p>
+} 
+
+@foreach (Department department in Model)
+{
+  <p>@Html.ActionLink($"{department.Name}", "Details", new { id = department.DepartmentId })</p>
+}
+
+<p>@Html.ActionLink("Home", "Index", "Home")</p>
+<p>@Html.ActionLink("Add new department", "Create")</p>

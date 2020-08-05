@@ -22,8 +22,6 @@
     @Html.DropDownList("DepartmentId")
   </div>
   <div class="form-group"> 
-    @*@Html.Label("Select course:")
-    @Html.DropDownList("CourseId")*@
     @Html.Label("Select courses:")
     @foreach (Course course in ViewBag.CourseId)
     {

@@ -1,0 +1,15 @@
+@{
+  Layout = "_Layout";
+}
+
+@model UniversityRegistrar.Models.Department
+
+<h3>Department info:</h3>
+<hr />
+<p class="student-info">@Html.DisplayFor(model => model.Name)</p>
+<hr />
+
+<p>@Html.ActionLink("Show students list", "StudentsList", new { id = Model.DepartmentId })</p>
+<p>@Html.ActionLink("Show courses list", "CoursesList", new { id = Model.DepartmentId })</p>
+<p>@Html.ActionLink("Show department list", "Index")</p>
+<p>@Html.ActionLink("Add new department", "Create")</p>

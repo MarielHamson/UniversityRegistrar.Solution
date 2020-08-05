@@ -1,20 +1,29 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace UniversityRegistrar.Migrations
 {
-    public partial class CreateDepartment : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "DepartmentId",
-                table: "Students",
-                nullable: false,
-                defaultValue: 0);
+            migrationBuilder.CreateTable(
+                name: "Courses",
+                columns: table => new
+                {
+                    CourseId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    CourseNumber = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Courses", x => x.CourseId);
+                });
 
             migrationBuilder.CreateTable(
-                name: "Department",
+                name: "Departments",
                 columns: table => new
                 {
                     DepartmentId = table.Column<int>(nullable: false)
@@ -23,7 +32,28 @@ namespace UniversityRegistrar.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Department", x => x.DepartmentId);
+                    table.PrimaryKey("PK_Departments", x => x.DepartmentId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Students",
+                columns: table => new
+                {
+                    StudentId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    EnrollmentDay = table.Column<DateTime>(nullable: false),
+                    DepartmentId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Students", x => x.StudentId);
+                    table.ForeignKey(
+                        name: "FK_Students_Departments_DepartmentId",
+                        column: x => x.DepartmentId,
+                        principalTable: "Departments",
+                        principalColumn: "DepartmentId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -32,9 +62,9 @@ namespace UniversityRegistrar.Migrations
                 {
                     StudentCourseDepartmentId = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    StudentId = table.Column<int>(nullable: false),
-                    CourseId = table.Column<int>(nullable: false),
-                    DepartmentId = table.Column<int>(nullable: false)
+                    StudentId = table.Column<int>(nullable: true),
+                    CourseId = table.Column<int>(nullable: true),
+                    DepartmentId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -44,25 +74,20 @@ namespace UniversityRegistrar.Migrations
                         column: x => x.CourseId,
                         principalTable: "Courses",
                         principalColumn: "CourseId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_StudentCourseDepartment_Department_DepartmentId",
+                        name: "FK_StudentCourseDepartment_Departments_DepartmentId",
                         column: x => x.DepartmentId,
-                        principalTable: "Department",
+                        principalTable: "Departments",
                         principalColumn: "DepartmentId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_StudentCourseDepartment_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
                         principalColumn: "StudentId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Students_DepartmentId",
-                table: "Students",
-                column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StudentCourseDepartment_CourseId",
@@ -79,34 +104,25 @@ namespace UniversityRegistrar.Migrations
                 table: "StudentCourseDepartment",
                 column: "StudentId");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Students_Department_DepartmentId",
+            migrationBuilder.CreateIndex(
+                name: "IX_Students_DepartmentId",
                 table: "Students",
-                column: "DepartmentId",
-                principalTable: "Department",
-                principalColumn: "DepartmentId",
-                onDelete: ReferentialAction.Cascade);
+                column: "DepartmentId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Students_Department_DepartmentId",
-                table: "Students");
-
             migrationBuilder.DropTable(
                 name: "StudentCourseDepartment");
 
             migrationBuilder.DropTable(
-                name: "Department");
+                name: "Courses");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Students_DepartmentId",
-                table: "Students");
+            migrationBuilder.DropTable(
+                name: "Students");
 
-            migrationBuilder.DropColumn(
-                name: "DepartmentId",
-                table: "Students");
+            migrationBuilder.DropTable(
+                name: "Departments");
         }
     }
 }

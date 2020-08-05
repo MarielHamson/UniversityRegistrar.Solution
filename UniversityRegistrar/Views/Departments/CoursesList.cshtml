@@ -1,0 +1,39 @@
+@{
+  Layout = "_Layout";
+}
+
+@using UniversityRegistrar.Models;
+@model UniversityRegistrar.Models.Department;
+
+@*<h3>Find a course:</h3>
+<hr />
+@using (Html.BeginForm("Index", "Courses", FormMethod.Get))
+{
+  <p>@Html.TextBox("searchCourse")</p>
+  <button class="btn" type="submit">Search</button>
+}*@
+
+<h3>Courses:</h3>
+<hr />
+@if(@Model.StudentsCourses.Count == 0)
+{
+  <p>No courses found.</p>
+}
+else
+{
+  <ul>
+  @foreach(var join in Model.StudentsCourses)
+  {
+    <li>@join.Course.Name</li>
+    @using (Html.BeginForm("DeleteCourse", "Departments"))
+    {
+      @Html.Hidden("joinId", @join.StudentCourseDepartmentId)
+      <input type="submit" value="Delete" class="btn" />
+    }
+  }
+  </ul>
+}
+
+<p>@Html.ActionLink("Home", "Index", "Home")</p>
+<p>@Html.ActionLink("Add new course", "Create", "Courses")</p>
+<p>@Html.ActionLink("Show list of departments", "Index")</p>

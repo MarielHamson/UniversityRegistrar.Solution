@@ -9,7 +9,7 @@ using UniversityRegistrar.Models;
 namespace UniversityRegistrar.Migrations
 {
     [DbContext(typeof(UniversityRegistrarContext))]
-    [Migration("20200803215423_Initial")]
+    [Migration("20200805205342_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,10 +33,24 @@ namespace UniversityRegistrar.Migrations
                     b.ToTable("Courses");
                 });
 
+            modelBuilder.Entity("UniversityRegistrar.Models.Department", b =>
+                {
+                    b.Property<int>("DepartmentId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("DepartmentId");
+
+                    b.ToTable("Departments");
+                });
+
             modelBuilder.Entity("UniversityRegistrar.Models.Student", b =>
                 {
                     b.Property<int>("StudentId")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<int>("DepartmentId");
 
                     b.Property<DateTime>("EnrollmentDay");
 
@@ -44,38 +58,54 @@ namespace UniversityRegistrar.Migrations
 
                     b.HasKey("StudentId");
 
+                    b.HasIndex("DepartmentId");
+
                     b.ToTable("Students");
                 });
 
-            modelBuilder.Entity("UniversityRegistrar.Models.StudentCourse", b =>
+            modelBuilder.Entity("UniversityRegistrar.Models.StudentCourseDepartment", b =>
                 {
-                    b.Property<int>("StudentCourseId")
+                    b.Property<int>("StudentCourseDepartmentId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("CourseId");
+                    b.Property<int?>("CourseId");
 
-                    b.Property<int>("StudentId");
+                    b.Property<int?>("DepartmentId");
 
-                    b.HasKey("StudentCourseId");
+                    b.Property<int?>("StudentId");
+
+                    b.HasKey("StudentCourseDepartmentId");
 
                     b.HasIndex("CourseId");
 
+                    b.HasIndex("DepartmentId");
+
                     b.HasIndex("StudentId");
 
-                    b.ToTable("StudentCourse");
+                    b.ToTable("StudentCourseDepartment");
                 });
 
-            modelBuilder.Entity("UniversityRegistrar.Models.StudentCourse", b =>
+            modelBuilder.Entity("UniversityRegistrar.Models.Student", b =>
+                {
+                    b.HasOne("UniversityRegistrar.Models.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("UniversityRegistrar.Models.StudentCourseDepartment", b =>
                 {
                     b.HasOne("UniversityRegistrar.Models.Course", "Course")
-                        .WithMany("Students")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany("StudentsDepartments")
+                        .HasForeignKey("CourseId");
+
+                    b.HasOne("UniversityRegistrar.Models.Department", "Department")
+                        .WithMany("StudentsCourses")
+                        .HasForeignKey("DepartmentId");
 
                     b.HasOne("UniversityRegistrar.Models.Student", "Student")
                         .WithMany("Courses")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("StudentId");
                 });
 #pragma warning restore 612, 618
         }

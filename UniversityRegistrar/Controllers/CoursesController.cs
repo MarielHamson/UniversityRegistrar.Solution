@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+/*using Microsoft.AspNetCore.Mvc;
 using UniversityRegistrar.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -103,4 +103,4 @@ namespace UniversityRegistrar.Controllers
       return RedirectToAction("Index");
     }
   }
-}
+}*/

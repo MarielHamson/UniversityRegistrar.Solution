@@ -13,7 +13,8 @@ namespace UniversityRegistrar.Models
     public string Name {get; set;}
     public DateTime EnrollmentDay {get; set;}
     public string EnrollmentDayInfo {get {return EnrollmentDay.ToString("MM/dd/yyyy");}}
+    public int DepartmentId {get; set;}
+    public virtual Department Department {get; set;}
     public virtual ICollection<StudentCourseDepartment> Courses {get; set;}  
-    public virtual StudentCourseDepartment Department {get; set;}  
   }
 }
