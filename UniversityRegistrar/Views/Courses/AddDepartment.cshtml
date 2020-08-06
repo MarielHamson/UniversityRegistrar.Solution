@@ -4,7 +4,7 @@
 
 @model UniversityRegistrar.Models.Course
 
-<h3>Add a student to a course:</h3>
+<h3>Add a department to a course:</h3>
 <hr />
 <p class="course-info">@Html.DisplayFor(model => model.Name)</p>
 
@@ -13,9 +13,9 @@
   @Html.HiddenFor(model => model.CourseId)
 
   <div class="form-group"> 
-    @Html.Label("Select student:")
-    @Html.DropDownList("StudentId")
+    @Html.Label("Select department:")
+    @Html.DropDownList("DepartmentId")
   </div>
-  <input type="submit" value="Add student" class="btn" />
+  <input type="submit" value="Add department" class="btn" />
 }
 <p>@Html.ActionLink("Back to courses list", "Index")</p>

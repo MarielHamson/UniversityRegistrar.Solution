@@ -48,21 +48,37 @@ namespace UniversityRegistrar.Controllers
     public ActionResult CoursesList(int id)
     {
       var thisDepartment = _db.Departments
-                          .Include(department => department.StudentsCourses)
+                          .Include(department => department.Courses)
                           .ThenInclude(join => join.Course)
                           .FirstOrDefault(department => department.DepartmentId ==id);
       return View(thisDepartment);
     }
 
+    /*[HttpPost]
+    public ActionResult DeleteCourse(int joinId)
+    {
+      var joinEntry = _db.CoursesDepartments.FirstOrDefault(entry => entry.CourseDepartmentId ==joinId);
+      _db.CoursesDepartments.Remove(joinEntry);
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }*/
+
     public ActionResult StudentsList(int id)
     {
       var thisDepartment = _db.Departments
-                          .Include(department => department.StudentsCourses)
-                          .ThenInclude(join => join.Student)
+                          .Include(department => department.Students)
                           .FirstOrDefault(department => department.DepartmentId ==id);
       return View(thisDepartment);
     }
 
+    /*[HttpPost]
+    public ActionResult DeleteStudent(int studentId)
+    {
+      var joinEntry = _db.CoursesDepartments.FirstOrDefault(entry => entry.CourseDepartmentId ==joinId);
+      _db.CoursesDepartments.Remove(joinEntry);
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }*/
     public ActionResult Edit(int id)
     {
       var thisDepartment = _db.Departments.FirstOrDefault(department => department.DepartmentId ==id);

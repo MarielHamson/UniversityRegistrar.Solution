@@ -2,7 +2,6 @@
   Layout = "_Layout";
 }
 
-@using UniversityRegistrar.Models;
 @model UniversityRegistrar.Models.Department;
 
 @*<h3>Find a course:</h3>
@@ -15,25 +14,25 @@
 
 <h3>Courses:</h3>
 <hr />
-@if(@Model.StudentsCourses.Count == 0)
+@if(@Model.Courses.Count == 0)
 {
   <p>No courses found.</p>
 }
 else
 {
   <ul>
-  @foreach(var join in Model.StudentsCourses)
+  @foreach(var join in Model.Courses)
   {
     <li>@join.Course.Name</li>
-    @using (Html.BeginForm("DeleteCourse", "Departments"))
+    @*@using (Html.BeginForm("DeleteCourse", "Departments"))
     {
-      @Html.Hidden("joinId", @join.StudentCourseDepartmentId)
+      @Html.Hidden("joinId", @join.CourseDepartmentId)
       <input type="submit" value="Delete" class="btn" />
-    }
+    }*@
   }
   </ul>
 }
 
 <p>@Html.ActionLink("Home", "Index", "Home")</p>
 <p>@Html.ActionLink("Add new course", "Create", "Courses")</p>
-<p>@Html.ActionLink("Show list of departments", "Index")</p>
+<p>@Html.ActionLink("Back to department list", "Index")</p>

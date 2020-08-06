@@ -1,7 +1,8 @@
-@* @{
+@{
   Layout = "_Layout";
 }
 
+@using UniversityRegistrar.Models
 @model UniversityRegistrar.Models.Course
 
 <h3>Add a new course:</h3>
@@ -16,7 +17,18 @@
     @Html.LabelFor(model => model.CourseNumber)
     @Html.TextBoxFor(model => model.CourseNumber, new {@class = "form-control"})
   </div>
-  
+  <div class="form-group"> 
+    @Html.Label("Select departments:")
+    @foreach (Department department in ViewBag.DepartmentId)
+    {
+      @Html.Label(department.Name)
+      @Html.CheckBox("DepartmentId", false, new { value = department.DepartmentId })
+    }
+  </div>
+  @*<div class="form-group"> 
+    @Html.Label("Select department:")
+    @Html.DropDownList("DepartmentId")
+  </div>*@
   <input type="submit" value="Add new course" class="btn" />
 }
-<p>@Html.ActionLink("Back to courses list", "Index")</p> *@
+<p>@Html.ActionLink("Back to courses list", "Index")</p>

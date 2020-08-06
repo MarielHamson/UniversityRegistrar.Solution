@@ -1,4 +1,4 @@
-/*using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using UniversityRegistrar.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,24 +28,37 @@ namespace UniversityRegistrar.Controllers
 
     public ActionResult Create()
     {
+      ViewBag.DepartmentId = _db.Departments.ToList();
+      //ViewBag.DepartmentId = new SelectList(_db.Departments, "DepartmentId", "Name");
       return View();
     }
 
     [HttpPost]
-    public ActionResult Create(Course course)
+    public ActionResult Create(Course course, int[] DepartmentId)
     {
       _db.Courses.Add(course);
+      if(DepartmentId.Length !=0)
+      {
+        foreach(int id in DepartmentId)
+        {
+          _db.CoursesDepartments.Add(new CourseDepartment() { CourseId = course.CourseId, DepartmentId = id });
+        }
+      }
+      /*if(DepartmentId!=0)
+      {
+        _db.CoursesDepartments.Add(new CourseDepartment() { CourseId = course.CourseId, DepartmentId = DepartmentId});
+      }*/
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
 
     public ActionResult Details(int id)
     {
-      Course thisCourse = _db.Courses
+      var thisCourse = _db.Courses
         .Include(course => course.Students).ThenInclude(join=> join.Student)
         .Include(course => course.Departments).ThenInclude(join => join.Department)
         .FirstOrDefault(courses => courses.CourseId == id);
-        return View(thisCourse);
+      return View(thisCourse);
     }
 
     public ActionResult Edit(int id)
@@ -73,8 +86,43 @@ namespace UniversityRegistrar.Controllers
     {
       if(StudentId != 0)
       {
-        _db.StudentCourse.Add(new StudentCourse() {StudentId = StudentId, CourseId = course.CourseId});
+        _db.StudentsCourses.Add(new StudentCourse() {StudentId = StudentId, CourseId = course.CourseId});
       }
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public ActionResult DeleteStudent(int joinId)
+    {
+      var joinEntry = _db.StudentsCourses.FirstOrDefault(entry => entry.StudentCourseId ==joinId);
+      _db.StudentsCourses.Remove(joinEntry);
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
+
+    public ActionResult AddDepartment(int id)
+    {
+      var thisCourse = _db.Courses.FirstOrDefault(courses => courses.CourseId == id);
+      ViewBag.DepartmentId = new SelectList(_db.Departments, "DepartmentId", "Name");
+      return View(thisCourse);
+    }
+    [HttpPost]
+    public ActionResult AddDepartment(Course course, int DepartmentId)
+    {
+      if(DepartmentId != 0)
+      {
+        _db.CoursesDepartments.Add(new CourseDepartment() {DepartmentId = DepartmentId, CourseId = course.CourseId});
+      }
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public ActionResult DeleteDepartment(int joinId)
+    {
+      var joinEntry = _db.CoursesDepartments.FirstOrDefault(entry => entry.CourseDepartmentId ==joinId);
+      _db.CoursesDepartments.Remove(joinEntry);
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
@@ -93,14 +141,5 @@ namespace UniversityRegistrar.Controllers
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
-
-    [HttpPost]
-    public ActionResult DeleteStudent(int joinId)
-    {
-      var joinEntry = _db.StudentCourse.FirstOrDefault(entry => entry.StudentCourseId ==joinId);
-      _db.StudentCourse.Remove(joinEntry);
-      _db.SaveChanges();
-      return RedirectToAction("Index");
-    }
   }
-}*/
+}

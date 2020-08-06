@@ -1,4 +1,4 @@
-@* @{
+@{
   Layout = "_Layout";
 }
 
@@ -22,13 +22,35 @@ else
     <li>@join.Student.Name</li>
     @using (Html.BeginForm("DeleteStudent", "Courses"))
     {
-      @Html.Hidden("joinId", @join.StudentCourseDepartmentId)
+      @Html.Hidden("joinId", @join.StudentCourseId)
       <input type="submit" value="Delete" class="btn" />
     }
   }
   </ul>
 }
+<hr />
+<h4>Departments:</h4>
+@if(@Model.Departments.Count == 0)
+{
+  <p>Course doesn't belong to any departments.</p>
+}
+else
+{
+  <ul>
+  @foreach(var join in Model.Departments)
+  {
+    <li>@join.Department.Name</li>
+    @using (Html.BeginForm("DeleteDepartment", "Courses"))
+    {
+      @Html.Hidden("joinId", @join.CourseDepartmentId)
+      <input type="submit" value="Delete" class="btn" />
+    }
+  }
+  </ul>
+}
+
 <p>@Html.ActionLink("Back to courses list", "Index")</p>
 <p>@Html.ActionLink("Edit course info", "Edit", new { id = Model.CourseId })</p>
 <p>@Html.ActionLink("Delete course", "Delete", new { id = Model.CourseId })</p>
-<p>@Html.ActionLink("Add a student", "AddStudent", new { id = Model.CourseId })</p> *@
+<p>@Html.ActionLink("Add a student", "AddStudent", new { id = Model.CourseId })</p>
+<p>@Html.ActionLink("Add a department", "AddDepartment", new { id = Model.CourseId })</p>

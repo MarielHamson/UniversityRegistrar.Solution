@@ -34,22 +34,14 @@ namespace UniversityRegistrar.Controllers
     }
 
     [HttpPost]
-    public ActionResult Create(Student student, int[] CourseId, int DepartmentId)
+    public ActionResult Create(Student student, int[] CourseId)
     {
       _db.Students.Add(student);
-      if(DepartmentId != 0)
+      if(CourseId.Length !=0)
       {
-        if(CourseId.Length !=0)
+        foreach(int id in CourseId)
         {
-          foreach(int id in CourseId)
-          {
-            _db.StudentCourseDepartment.Add(new StudentCourseDepartment() { CourseId = id, StudentId = student.StudentId, DepartmentId = DepartmentId });
-          }
-          //_db.StudentCourse.Add(new StudentCourse() { CourseId = CourseId, StudentId = student.StudentId});
-        }
-        else
-        {
-          _db.StudentCourseDepartment.Add(new StudentCourseDepartment() { StudentId = student.StudentId, DepartmentId = DepartmentId });
+          _db.StudentsCourses.Add(new StudentCourse() { CourseId = id, StudentId = student.StudentId});
         }
       }
       _db.SaveChanges();
@@ -75,20 +67,13 @@ namespace UniversityRegistrar.Controllers
     }
 
     [HttpPost]
-    public ActionResult Edit(Student student, int[] CourseId, int DepartmentId)
+    public ActionResult Edit(Student student, int[] CourseId)
     {
-      if(DepartmentId != 0)
+      if(CourseId.Length !=0)
       {
-        if(CourseId.Length !=0)
+        foreach(int id in CourseId)
         {
-          foreach(int id in CourseId)
-          {
-            _db.StudentCourseDepartment.Add(new StudentCourseDepartment() { CourseId = id, StudentId = student.StudentId, DepartmentId = DepartmentId });
-          }
-        }
-        else
-        {
-          _db.StudentCourseDepartment.Add(new StudentCourseDepartment() { StudentId = student.StudentId, DepartmentId = DepartmentId });
+          _db.StudentsCourses.Add(new StudentCourse() { CourseId = id, StudentId = student.StudentId});
         }
       }
       _db.Entry(student).State = EntityState.Modified;
@@ -109,7 +94,7 @@ namespace UniversityRegistrar.Controllers
       {
         foreach(int id in CourseId)
         {
-          _db.StudentCourseDepartment.Add(new StudentCourseDepartment() { CourseId = id, StudentId = student.StudentId});
+          _db.StudentsCourses.Add(new StudentCourse() { CourseId = id, StudentId = student.StudentId});
         }
       }
       _db.SaveChanges();
@@ -119,8 +104,8 @@ namespace UniversityRegistrar.Controllers
     [HttpPost]
     public ActionResult DeleteCourse(int joinId)
     {
-      var joinEntry = _db.StudentCourseDepartment.FirstOrDefault(entry => entry.StudentCourseDepartmentId ==joinId);
-      _db.StudentCourseDepartment.Remove(joinEntry);
+      var joinEntry = _db.StudentsCourses.FirstOrDefault(entry => entry.StudentCourseId ==joinId);
+      _db.StudentsCourses.Remove(joinEntry);
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
