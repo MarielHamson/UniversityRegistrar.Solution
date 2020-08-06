@@ -9,8 +9,47 @@
 <p class="student-info">@Html.DisplayFor(model => model.Name)</p>
 <hr />
 
-<p>@Html.ActionLink("Show students list", "StudentsList", new { id = Model.DepartmentId })</p>
-<p>@Html.ActionLink("Show courses list", "CoursesList", new { id = Model.DepartmentId })</p>
-
+<h4>Student enrolled:</h4>
+@if(@Model.Students.Count == 0)
+{
+  <p>This department doesn't have any students.</p>
+}
+else
+{
+  <ul>
+  @foreach(var student in Model.Students)
+  {
+    <li>@student.Name</li>
+    @using (Html.BeginForm("DeleteStudent", "Departments"))
+    {
+      @Html.Hidden("studentId", @student.StudentId)
+      @Html.Hidden("departmentId", @Model.DepartmentId)
+      <input type="submit" value="Delete" class="btn" />
+    }
+  }
+  </ul>
+}
+<hr />
+<h4>Courses:</h4>
+@if(@Model.Courses.Count == 0)
+{
+  <p>This department doesn't contain any courses.</p>
+}
+else
+{
+  <ul>
+  @foreach(var join in Model.Courses)
+  {
+    <li>@join.Course.Name</li>
+    @using (Html.BeginForm("DeleteCourse", "Departments"))
+    {
+      @Html.Hidden("joinId", @join.CourseDepartmentId)
+      <input type="submit" value="Delete" class="btn" />
+    }
+  }
+  </ul>
+}
+<br>
+<p>@Html.ActionLink("Delete Department", "Delete", new { id = Model.DepartmentId })</p>
 <p>@Html.ActionLink("Back to department list", "Index")</p>
 <p>@Html.ActionLink("Add new department", "Create")</p>

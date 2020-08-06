@@ -41,7 +41,10 @@ namespace UniversityRegistrar.Controllers
     
     public ActionResult Details(int id)
     {
-      var thisDepartment = _db.Departments.FirstOrDefault(department => department.DepartmentId ==id);
+      var thisDepartment = _db.Departments
+        .Include(department => department.Students)
+        .Include(department => department.Courses).ThenInclude(join => join.Course)
+        .FirstOrDefault(department => department.DepartmentId == id);
       return View(thisDepartment);
     }
 
@@ -54,14 +57,14 @@ namespace UniversityRegistrar.Controllers
       return View(thisDepartment);
     }
 
-    /*[HttpPost]
+    [HttpPost]
     public ActionResult DeleteCourse(int joinId)
     {
-      var joinEntry = _db.CoursesDepartments.FirstOrDefault(entry => entry.CourseDepartmentId ==joinId);
+      var joinEntry = _db.CoursesDepartments.FirstOrDefault(entry => entry.CourseDepartmentId == joinId);
       _db.CoursesDepartments.Remove(joinEntry);
       _db.SaveChanges();
       return RedirectToAction("Index");
-    }*/
+    }
 
     public ActionResult StudentsList(int id)
     {
@@ -71,14 +74,17 @@ namespace UniversityRegistrar.Controllers
       return View(thisDepartment);
     }
 
-    /*[HttpPost]
-    public ActionResult DeleteStudent(int studentId)
+    [HttpPost]
+    public ActionResult DeleteStudent(int departmentId, int studentId)
     {
-      var joinEntry = _db.CoursesDepartments.FirstOrDefault(entry => entry.CourseDepartmentId ==joinId);
-      _db.CoursesDepartments.Remove(joinEntry);
+      //var joinEntry = _db.CoursesDepartments.FirstOrDefault(entry => entry.CourseDepartmentId ==studentId);
+      //_db.CoursesDepartments.Remove(joinEntry);
+      var thisDepartment = _db.Departments.FirstOrDefault(department => department.DepartmentId == departmentId);
+      var thisStudent = _db.Students.FirstOrDefault(student => student.StudentId == studentId);
+      thisDepartment.Students.Remove(thisStudent);
       _db.SaveChanges();
       return RedirectToAction("Index");
-    }*/
+    }
     public ActionResult Edit(int id)
     {
       var thisDepartment = _db.Departments.FirstOrDefault(department => department.DepartmentId ==id);
